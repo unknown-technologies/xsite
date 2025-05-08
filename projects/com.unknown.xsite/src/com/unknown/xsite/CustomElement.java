@@ -216,8 +216,7 @@ public class CustomElement {
 			break;
 		}
 		case "choose": {
-			boolean matched = false;
-			for(Element e : command.getChildren(true)) {
+			loop: for(Element e : command.getChildren(true)) {
 				if(!e.uri.equals(Project.XMLNS_C)) {
 					throw new IOException("unexpected element: " + e.name);
 				}
@@ -228,15 +227,13 @@ public class CustomElement {
 						for(Element c : e.getChildren(true)) {
 							apply(result, project, attrs, c, ctx);
 						}
-						matched = true;
+						break loop;
 					}
 					break;
 				}
 				case "otherwise": {
-					if(!matched) {
-						for(Element c : e.getChildren(true)) {
-							apply(result, project, attrs, c, ctx);
-						}
+					for(Element c : e.getChildren(true)) {
+						apply(result, project, attrs, c, ctx);
 					}
 					break;
 				}
